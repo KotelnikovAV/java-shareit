@@ -11,6 +11,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -22,12 +23,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto user) {
         log.info("Начало процесса создания пользователя");
-
-        if (userStorage.checkEmail(user.getEmail(), 0)) {
-            log.info("Проверка пользователя на дублирование email при создании");
-            throw new DuplicatedDataException("Пользователь с таким email уже есть");
-        }
-
         User createdUser = userStorage.create(userMapper.userDtoToUser(user));
         log.info("Пользователь создан");
         return userMapper.userToUserDto(createdUser);
@@ -37,14 +32,8 @@ public class UserServiceImpl implements UserService {
     public UserDto update(UserDto user, long userId) {
         log.info("Начало процесса обновления пользователя с userId = {}", userId);
 
-        if (!userStorage.checkUser(userId)) {
-            log.info("Проверка наличия пользователя при обновлении");
+        if (userStorage.getUserById(userId).isEmpty()) {
             throw new NotFoundException("Такого пользователя нет");
-        }
-
-        if (userStorage.checkEmail(user.getEmail(), userId)) {
-            log.info("Проверка пользователя на дублирование email при обновлении");
-            throw new DuplicatedDataException("Пользователь с таким email уже есть");
         }
 
         user.setId(userId);
@@ -56,15 +45,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(long id) {
         log.info("Начало процесса получения пользователя по id = {}", id);
+        Optional<User> user = userStorage.getUserById(id);
 
-        if (!userStorage.checkUser(id)) {
-            log.info("Проверка наличия пользователя при получении");
+        if (user.isEmpty()) {
             throw new NotFoundException("Такого пользователя нет");
         }
 
-        User user = userStorage.getUserById(id);
         log.info("Пользователь получен");
-        return userMapper.userToUserDto(user);
+        return userMapper.userToUserDto(user.get());
     }
 
     @Override
@@ -82,8 +70,7 @@ public class UserServiceImpl implements UserService {
     public void delete(long id) {
         log.info("Начало процесса удаления пользователя по id = {}", id);
 
-        if (!userStorage.checkUser(id)) {
-            log.info("Проверка наличия пользователя при удалении");
+        if (userStorage.getUserById(id).isEmpty()) {
             throw new NotFoundException("Такого пользователя нет");
         }
 

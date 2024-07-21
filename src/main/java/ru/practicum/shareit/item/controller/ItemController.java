@@ -19,8 +19,7 @@ public class ItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto create(@Valid @RequestBody ItemDto item, @RequestHeader("X-Sharer-User-Id") long ownerId) {
-        log.info("Получен HTTP-запрос по адресу /items (метод POST). Вызван метод " +
-                "create(@Valid @RequestBody ItemDto item, @RequestHeader(\"X-Sharer-User-Id\") long ownerId)");
+        log.info("Получен POST запрос на создание предмета {} пользователем с id = {}", item, ownerId);
         return itemService.create(item, ownerId);
     }
 
@@ -28,30 +27,26 @@ public class ItemController {
     public ItemDto update(@RequestBody ItemDto newItem,
                           @PathVariable long itemId,
                           @RequestHeader("X-Sharer-User-Id") long ownerId) {
-        log.info("Получен HTTP-запрос по адресу /items/{itemId} (метод PATCH). "
-                + "Вызван метод update(@Valid @RequestBody ItemDto newItem, @PathVariable long itemId, " +
-                "@RequestHeader(\"X-Sharer-User-Id\") long ownerId)");
+        log.info("Получен PATCH запрос на обновление предмета с itemId = {} от пользователя с ownerId = {}, " +
+                "поля, которые нужно обновить: {}", itemId, ownerId, newItem);
         return itemService.update(newItem, itemId, ownerId);
     }
 
     @GetMapping("/{itemId}")
     public ItemDto getItemById(@PathVariable long itemId) {
-        log.info("Получен HTTP-запрос по адресу /items/{itemId} (метод GET). "
-                + "Вызван метод getItemById(@PathVariable long itemId)");
+        log.info("Получен GET запрос на получение предмета с itemId = {}", itemId);
         return itemService.getItemById(itemId);
     }
 
     @GetMapping
     public List<ItemDto> getAllItemsByOwner(@RequestHeader("X-Sharer-User-Id") long ownerId) {
-        log.info("Получен HTTP-запрос по адресу /items (метод GET). "
-                + "Вызван метод getAllItemsByOwner(@RequestHeader(\"X-Sharer-User-Id\"");
+        log.info("Получен GET запрос на получение всех предметов пользователя с ownerId = {}", ownerId);
         return itemService.getAllItemsByOwner(ownerId);
     }
 
     @GetMapping("/search")
     public List<ItemDto> searchByText(@RequestParam(defaultValue = "") String text) {
-        log.info("Получен HTTP-запрос по адресу /items/search (метод GET). "
-                + "Вызван метод searchByText(@RequestParam(defaultValue = \"\") String text");
+        log.info("Получен GET запрос на получение предмета по поиску text = {}", text);
         return itemService.searchByText(text);
     }
 }

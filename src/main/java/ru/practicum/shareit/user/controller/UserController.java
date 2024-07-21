@@ -19,36 +19,33 @@ public class UserController {
 
     @GetMapping
     public List<UserDto> getAllUsers() {
-        log.info("Получен HTTP-запрос по адресу /users (метод GET). Вызван метод getAllUsers()");
+        log.info("Получен GET запрос на получение всех пользователей");
         return userService.getAllUsers();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@Valid @RequestBody UserDto userDto) {
-        log.info("Получен HTTP-запрос по адресу /users (метод POST). "
-                + "Вызван метод create(@Valid @RequestBody UserDto userDto)");
-        return userService.create(userDto);
+    public UserDto create(@Valid @RequestBody UserDto user) {
+        log.info("Получен POST запрос на создание пользователя user {}", user);
+        return userService.create(user);
     }
 
     @PatchMapping("/{userId}")
-    public UserDto update(@RequestBody UserDto newUserDto, @PathVariable long userId) {
-        log.info("Получен HTTP-запрос по адресу /users/{userId} (метод PATCH). "
-                + "Вызван метод update(@Valid @RequestBody UserDto newUserDto)");
-        return userService.update(newUserDto, userId);
+    public UserDto update(@RequestBody UserDto newUser, @PathVariable long userId) {
+        log.info("Получен PATCH запрос на обновление пользователя с userId = {}, поля, которые нужно обновить: {}",
+                userId, newUser);
+        return userService.update(newUser, userId);
     }
 
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable long userId) {
-        log.info("Получен HTTP-запрос по адресу /users/{userId} (метод DELETE). " +
-                " Вызван метод delete(@PathVariable int userId)");
+        log.info("Получен DELETE запрос на удаление пользователя с userId = {}", userId);
         userService.delete(userId);
     }
 
     @GetMapping("/{userId}")
     public UserDto getUserById(@PathVariable long userId) {
-        log.info("Получен HTTP-запрос по адресу /users/{userId} (метод GET). " +
-                " Вызван метод getUser(@PathVariable int userId)");
+        log.info("Получен GET запрос на получения пользователя с userId = {}", userId);
         return userService.getUserById(userId);
     }
 }

@@ -13,6 +13,7 @@ import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -26,8 +27,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto create(ItemDto itemDto, long ownerId) {
         log.info("Начало процесса создания предмета с ownerId = {}", ownerId);
 
-        if (!userStorage.checkUser(ownerId)) {
-            log.info("Начало проверки наличия владельца при создании");
+        if (userStorage.getUserById(ownerId).isEmpty()) {
             throw new NotFoundException("Такого владельца не существует");
         }
 
@@ -41,13 +41,11 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto update(ItemDto itemDto, long id, long ownerId) {
         log.info("Начало процесса обновления предмета с id = {} и ownerId = {}", id, ownerId);
 
-        if (!itemStorage.checkItem(id)) {
-            log.info("Начало проверки наличия предмета при обновлении");
+        if (itemStorage.getItemById(id).isEmpty()) {
             throw new NotFoundException("Такого предмета не существует");
         }
 
-        if (!userStorage.checkUser(ownerId)) {
-            log.info("Начало проверки наличия владельца при обновлении");
+        if (userStorage.getUserById(ownerId).isEmpty()) {
             throw new NotFoundException("Такого владельца не существует");
         }
 
@@ -65,22 +63,21 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto getItemById(long id) {
         log.info("Начало процесса получения предмета по id = {}", id);
+        Optional<Item> item = itemStorage.getItemById(id);
 
-        if (!itemStorage.checkItem(id)) {
-            log.info("Начало проверки наличия предмета при получении");
+        if (item.isEmpty()) {
             throw new NotFoundException("Такого предмета не существует");
         }
 
-        Item item = itemStorage.getItemById(id);
-        return itemMapper.itemToItemDto(item);
+        log.info("Предмет получен");
+        return itemMapper.itemToItemDto(item.get());
     }
 
     @Override
     public List<ItemDto> getAllItemsByOwner(long ownerId) {
         log.info("Начало процесса получения всех предметов пользователя с ownerId = {}", ownerId);
 
-        if (!userStorage.checkUser(ownerId)) {
-            log.info("Начало проверки наличия владельца при получении списка вещей");
+        if (userStorage.getUserById(ownerId).isEmpty()) {
             throw new NotFoundException("Такого владельца не существует");
         }
 
