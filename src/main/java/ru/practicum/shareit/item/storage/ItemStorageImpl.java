@@ -21,9 +21,8 @@ public class ItemStorageImpl implements ItemStorage {
         if (itemsOwner.containsKey(item.getOwnerId())) {
             itemsOwner.get(item.getOwnerId()).add(item);
         } else {
-            List<Item> listItems = new ArrayList<>();
-            listItems.add(item);
-            itemsOwner.put(item.getOwnerId(), listItems);
+            List<Item> items = itemsOwner.computeIfAbsent(item.getOwnerId(), k -> new ArrayList<>());
+            items.add(item);
         }
 
         return item;

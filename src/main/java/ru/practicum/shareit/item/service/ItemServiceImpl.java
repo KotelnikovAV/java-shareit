@@ -27,9 +27,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto create(ItemDto itemDto, long ownerId) {
         log.info("Начало процесса создания предмета с ownerId = {}", ownerId);
 
-        if (userStorage.getUserById(ownerId).isEmpty()) {
-            throw new NotFoundException("Такого владельца не существует");
-        }
+        userStorage.getUserById(ownerId).orElseThrow(() -> new NotFoundException("Такого владельца не существует"));
 
         itemDto.setOwnerId(ownerId);
         Item item = itemStorage.create(itemMapper.itemDtoToItem(itemDto));
