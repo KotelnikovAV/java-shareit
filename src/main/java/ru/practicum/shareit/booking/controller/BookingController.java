@@ -1,9 +1,59 @@
 package ru.practicum.shareit.booking.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.booking.dto.RequestBookingDto;
+import ru.practicum.shareit.booking.dto.ResponseBookingDto;
+import ru.practicum.shareit.booking.model.State;
+import ru.practicum.shareit.booking.service.BookingService;
 
+import java.util.List;
+
+@Slf4j
 @RestController
-@RequestMapping(path = "/bookings")
+@RequiredArgsConstructor
+@RequestMapping("bookings")
 public class BookingController {
+    private final BookingService bookingService;
+
+    @PostMapping
+    public ResponseBookingDto create(@Valid @RequestBody RequestBookingDto booking,
+                                     @RequestHeader("X-Sharer-User-Id") long userId) {
+        log.info("Получен POST запрос на создание предмета {} пользователем с id = {}", booking, userId);
+        return bookingService.create(booking, userId);
+    }
+
+    @PatchMapping("/{bookingId}")
+    public ResponseBookingDto update(@PathVariable long bookingId,
+                                     @RequestHeader("X-Sharer-User-Id") long ownerId, @RequestParam boolean approved) {
+        log.info("Получен PATCH запрос на подтверждение или отклонение запроса с bookingId = {} на бронирование " +
+                "от владельца с ownerId = {}, статус подтверждения: {}", bookingId, ownerId, approved);
+        return bookingService.update(bookingId, ownerId, approved);
+    }
+
+    @GetMapping("/{bookingId}")
+    public ResponseBookingDto findById(@PathVariable long bookingId,
+                                             @RequestHeader("X-Sharer-User-Id") long userId) {
+        log.info("Получен GET запрос на получение бронирования с bookingId = {}, от пользователя с id = {}",
+                bookingId, userId);
+        return bookingService.findById(bookingId, userId);
+    }
+
+    @GetMapping
+    public List<ResponseBookingDto> findByBooker(@RequestHeader("X-Sharer-User-Id") long bookerId,
+                                                          @RequestParam(defaultValue = "ALL") State state) {
+        log.info("Получен GET запрос на получение всех бронирований текущего пользователя с bookerId = {}, state = {}",
+                bookerId, state);
+        return bookingService.findByBooker(bookerId, state);
+    }
+
+    @GetMapping("/owner")
+    public List<ResponseBookingDto> findByOwner(@RequestHeader("X-Sharer-User-Id") long ownerId,
+                                                         @RequestParam(defaultValue = "ALL") State state) {
+        log.info("Получен GET запрос на получение списка бронирований для всех вещей текущего пользователя " +
+                        "с ownerId = {}, state = {}", ownerId, state);
+        return bookingService.findByOwner(ownerId, state);
+    }
 }

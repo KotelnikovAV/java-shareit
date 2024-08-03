@@ -1,13 +1,13 @@
 package ru.practicum.shareit.errorHandler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.exception.DataAccessException;
-import ru.practicum.shareit.exception.DuplicatedDataException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 
@@ -17,7 +17,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleDuplicatedData(DuplicatedDataException e) {
+    public ErrorResponse handleDuplicatedData(DataIntegrityViolationException e) {
         log.error("Возникло исключение DuplicatedDataException. {}", e.getMessage());
         return new ErrorResponse("Дублирование данных", e.getMessage());
     }
@@ -51,7 +51,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleNotAccessData(DataAccessException e) {
         log.error("Возникло исключение DataAccessException. {}", e.getMessage());
         return new ErrorResponse("Данные не найдены", e.getMessage());
