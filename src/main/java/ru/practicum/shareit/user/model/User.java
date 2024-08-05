@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class User {
     private String name;
 
     @NotBlank
+    @Email
     @Column(unique = true)
     private String email;
 }
