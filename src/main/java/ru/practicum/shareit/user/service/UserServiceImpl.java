@@ -15,11 +15,11 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    @Transactional
     @Override
     public UserDto create(UserDto user) {
         log.info("Начало процесса создания пользователя");
@@ -28,21 +28,19 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToUserDto(createdUser);
     }
 
-    @Transactional
     @Override
     public UserDto update(UserDto newUser, long userId) {
         log.info("Начало процесса обновления пользователя с userId = {}", userId);
         User updatedUser = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Такого пользователя нет"));
 
-        if (newUser.getName() != null) {
+        if (newUser.getName() != null && !newUser.getName().isBlank()) {
             updatedUser.setName(newUser.getName());
         }
-        if (newUser.getEmail() != null) {
+        if (newUser.getEmail() != null && !newUser.getEmail().isBlank()) {
             updatedUser.setEmail(newUser.getEmail());
         }
 
-        updatedUser = userRepository.save(updatedUser);
         log.info("Пользователь обновлен");
         return userMapper.userToUserDto(updatedUser);
     }
@@ -68,7 +66,6 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
-    @Transactional
     @Override
     public void delete(long id) {
         log.info("Начало процесса удаления пользователя по id = {}", id);

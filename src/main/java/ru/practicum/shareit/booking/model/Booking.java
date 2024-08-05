@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,17 +21,27 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "start_date", nullable = false)
+
+    @NotNull
+    @Column(name = "start_date")
     private LocalDateTime start;
-    @Column(name = "end_date",nullable = false)
+
+    @NotNull
+    @Column(name = "end_date")
     private LocalDateTime end;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booker_id")
     private User booker;
-    @Column(nullable = false)
+
+    @NotNull
+    @Column
     @Enumerated(value = EnumType.STRING)
     private Status status;
 }

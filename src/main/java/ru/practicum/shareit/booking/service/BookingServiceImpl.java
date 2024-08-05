@@ -26,16 +26,16 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final BookingMapper bookingMapper;
 
-    @Transactional
     @Override
     public ResponseBookingDto create(RequestBookingDto creatingBooking, long userId) {
-        log.info("Начало процесса создания бронирования с ownerId = {}", userId);
+        log.info("Начало процесса создания бронирования с userId = {}", userId);
 
         if (creatingBooking.getStart().isAfter(creatingBooking.getEnd())) {
             throw new ValidationException("Время старта бронирование должно быть до времени конца бронирования");
@@ -59,7 +59,6 @@ public class BookingServiceImpl implements BookingService {
         return bookingMapper.bookingToResponseBookingDto(booking);
     }
 
-    @Transactional
     @Override
     public ResponseBookingDto update(long bookingId, long ownerId, boolean approved) {
         log.info("Начало процесса подтверждения бронирования с ownerId = {}, approved = {}", ownerId, approved);
@@ -72,7 +71,6 @@ public class BookingServiceImpl implements BookingService {
             throw new DataAccessException("У вас нет доступа к этой информации");
         }
 
-        booking = bookingRepository.save(booking);
         log.info("Статус бронирования изменен на approved = {}", approved);
         return bookingMapper.bookingToResponseBookingDto(booking);
     }
@@ -128,8 +126,13 @@ public class BookingServiceImpl implements BookingService {
             case CURRENT -> bookings = bookingRepository.findAllBookingByOwnerAndCurrent(ownerId, LocalDateTime.now());
             case FUTURE -> bookings = bookingRepository.findAllBookingByOwnerAndFuture(ownerId, LocalDateTime.now());
             case WAITING -> bookings = bookingRepository.findAllBookingByOwnerAndStatus(ownerId, Status.WAITING.name());
-            case REJECTED -> bookings = bookingRepository.findAllBookingByOwnerAndStatus(ownerId, Status.REJECTED.name());
+            case REJECTED -> bookings = bookingRepository
+                    .findAllBookingByOwnerAndStatus(ownerId, Status.REJECTED.name());
             case null, default -> bookings = new ArrayList<>();
+        }
+
+        if (bookings.isEmpty()) {
+            throw new NotFoundException("Список пустой");
         }
 
         log.info("Список бронирований вещей пользователя получен");

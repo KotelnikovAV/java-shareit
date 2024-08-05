@@ -30,6 +30,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
@@ -39,7 +40,6 @@ public class ItemServiceImpl implements ItemService {
     private final CommentMapper commentMapper;
     private final BookingMapper bookingMapper;
 
-    @Transactional
     @Override
     public ItemDto createItem(ItemDto itemDto, long ownerId) {
         log.info("Начало процесса создания предмета с ownerId = {}", ownerId);
@@ -52,7 +52,6 @@ public class ItemServiceImpl implements ItemService {
         return itemMapper.itemToItemDto(item);
     }
 
-    @Transactional
     @Override
     public CommentDto createComment(CommentDto newComment, long itemId, long userId) {
         log.info("Начало процесса создания комментария на предмет с itemId = {} от пользователя с userId = {}",
@@ -75,7 +74,6 @@ public class ItemServiceImpl implements ItemService {
         return commentMapper.commentToCommentDto(comment);
     }
 
-    @Transactional
     @Override
     public ItemDto update(ItemDto newItem, long id, long ownerId) {
         log.info("Начало процесса обновления предмета с id = {} и ownerId = {}", id, ownerId);
@@ -88,17 +86,16 @@ public class ItemServiceImpl implements ItemService {
             throw new DataAccessException("У вас нет доступа к этой информации");
         }
 
-        if (newItem.getName() != null) {
+        if (newItem.getName() != null && !newItem.getName().isBlank()) {
             item.setName(newItem.getName());
         }
-        if (newItem.getDescription() != null) {
+        if (newItem.getDescription() != null && !newItem.getDescription().isBlank()) {
             item.setDescription(newItem.getDescription());
         }
         if (newItem.getAvailable() != null) {
             item.setAvailable(newItem.getAvailable());
         }
 
-        item = itemRepository.save(item);
         log.info("Предмет обновлен");
         return itemMapper.itemToItemDto(item);
     }

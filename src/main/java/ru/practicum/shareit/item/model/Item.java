@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,12 +19,20 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(nullable = false)
+
+    @NotBlank
+    @Column
     private String name;
-    @Column(nullable = false)
+
+    @NotBlank
+    @Column
     private String description;
-    @Column(nullable = false)
+
+    @NotNull
+    @Column
     private Boolean available;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private User owner;
