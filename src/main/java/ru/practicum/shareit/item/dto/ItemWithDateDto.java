@@ -4,13 +4,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
-import ru.practicum.shareit.booking.dto.ResponseBookingDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Builder
-public class ItemDto {
+public class ItemWithDateDto {
     private long id;
     @NotBlank
     private String name;
@@ -19,7 +19,7 @@ public class ItemDto {
     @NotNull
     private Boolean available;
     private long ownerId;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private List<CommentDto> comments;
-    private ResponseBookingDto lastBooking;
-    private ResponseBookingDto nextBooking;
 }

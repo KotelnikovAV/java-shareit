@@ -9,31 +9,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.shareit.user.model.User;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "items")
+@Table(name = "comments")
 @Setter
 @Getter
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Item {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotBlank
     @Column
-    private String name;
-
-    @NotBlank
-    @Column
-    private String description;
-
-    @NotNull
-    @Column
-    private Boolean available;
+    private String text;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
-    private User owner;
+    @JoinColumn(name = "item_id")
+    private Item item;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    @NotNull
+    @Column
+    private LocalDateTime created;
 }

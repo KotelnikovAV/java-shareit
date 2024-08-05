@@ -3,7 +3,6 @@ package ru.practicum.shareit.user.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
@@ -18,13 +17,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserDto> getAllUsers() {
+    public List<UserDto> findAll() {
         log.info("Получен GET запрос на получение всех пользователей");
-        return userService.getAllUsers();
+        return userService.findAll();
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public UserDto create(@Valid @RequestBody UserDto user) {
         log.info("Получен POST запрос на создание пользователя user {}", user);
         return userService.create(user);
@@ -44,8 +42,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUserById(@PathVariable long userId) {
+    public UserDto findById(@PathVariable long userId) {
         log.info("Получен GET запрос на получения пользователя с userId = {}", userId);
-        return userService.getUserById(userId);
+        return userService.findById(userId);
     }
 }
