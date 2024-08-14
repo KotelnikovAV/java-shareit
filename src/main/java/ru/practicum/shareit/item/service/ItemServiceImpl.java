@@ -62,7 +62,8 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new NotFoundException("Такого пользователя не существует"));
 
         if (bookingRepository.findByUserId(userId, LocalDateTime.now()).isEmpty()) {
-            throw new ValidationException("Данный пользователь не использовал эту вещь");
+            System.out.println(LocalDateTime.now());
+            throw new ValidationException("Данный пользователь не использовал эту вещь, время : " + LocalDateTime.now());
         }
 
         Comment comment = commentMapper.commentDtoToComment(newComment);

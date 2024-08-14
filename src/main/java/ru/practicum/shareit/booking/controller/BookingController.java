@@ -22,7 +22,7 @@ public class BookingController {
     @PostMapping
     public ResponseBookingDto create(@Valid @RequestBody RequestBookingDto booking,
                                      @RequestHeader(USER_ID) long userId) {
-        log.info("Получен POST запрос на создание предмета {} пользователем с id = {}", booking, userId);
+        log.info("Получен POST запрос на создание бронирования {} пользователем с id = {}", booking, userId);
         return bookingService.create(booking, userId);
     }
 
