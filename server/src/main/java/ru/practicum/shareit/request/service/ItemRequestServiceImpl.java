@@ -21,7 +21,6 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository itemRequestRepository;
     private final ItemRequestMapper itemRequestMapper;
@@ -29,6 +28,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
 
+    @Transactional
     @Override
     public ItemRequestDto create(ItemRequestDto newItemRequest, long userId) {
         User user = userRepository.findById(userId)
@@ -40,6 +40,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         return itemRequestMapper.itemRequestToItemRequestDto(itemRequest);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ItemRequestDto> findByUserId(long userId) {
         if (!userRepository.existsById(userId)) {
@@ -54,6 +55,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         return getListRequestsDtoWithItems(itemRequestsDto);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ItemRequestDto> findAll(long userId) {
         if (!userRepository.existsById(userId)) {
@@ -68,6 +70,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         return getListRequestsDtoWithItems(itemRequestsDto);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ItemRequestDto findByRequestId(long requestId) {
         ItemRequest itemRequest = itemRequestRepository.findById(requestId)

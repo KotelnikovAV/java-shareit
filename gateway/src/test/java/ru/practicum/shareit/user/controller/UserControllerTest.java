@@ -21,7 +21,7 @@ class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper;
 
     private MockMvc mvc;
 
@@ -29,6 +29,8 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
+        mapper = new ObjectMapper();
+
         mvc = MockMvcBuilders
                 .standaloneSetup(userController)
                 .build();

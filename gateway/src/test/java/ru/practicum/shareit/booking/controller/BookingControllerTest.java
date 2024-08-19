@@ -21,7 +21,7 @@ class BookingControllerTest {
     @InjectMocks
     private BookingController bookingController;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper;
 
     private MockMvc mvc;
 
@@ -29,6 +29,8 @@ class BookingControllerTest {
 
     @BeforeEach
     void setUp() {
+        mapper = new ObjectMapper();
+
         mvc = MockMvcBuilders
                 .standaloneSetup(bookingController)
                 .build();

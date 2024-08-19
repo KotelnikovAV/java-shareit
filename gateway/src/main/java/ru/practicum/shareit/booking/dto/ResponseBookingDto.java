@@ -8,13 +8,15 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
+import static ru.practicum.shareit.booking.controller.BookingController.PATTERN;
+
 @Data
 @Builder
 public class ResponseBookingDto {
     private long id;
-    @JsonFormat(pattern = "yyyy-MM-dd, HH:mm:ss")
+    @JsonFormat(pattern = PATTERN)
     private LocalDateTime start;
-    @JsonFormat(pattern = "yyyy-MM-dd, HH:mm:ss")
+    @JsonFormat(pattern = PATTERN)
     private LocalDateTime end;
     private ItemDto item;
     private UserDto booker;

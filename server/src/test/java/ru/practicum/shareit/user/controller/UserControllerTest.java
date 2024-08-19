@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,11 +35,16 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
 
-    private UserDto userDto = UserDto.builder()
-            .id(1L)
-            .name("Варвара")
-            .email("var@ya.ru")
-            .build();
+    private UserDto userDto;
+
+    @BeforeEach
+    void setUp() {
+        userDto = UserDto.builder()
+                .id(1L)
+                .name("Варвара")
+                .email("var@ya.ru")
+                .build();
+    }
 
     @Test
     void findAll() throws Exception {

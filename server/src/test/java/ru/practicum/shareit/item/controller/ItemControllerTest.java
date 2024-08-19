@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -36,19 +37,25 @@ class ItemControllerTest {
     @MockBean
     private ItemService itemService;
 
-    private ItemDto itemDto = ItemDto.builder()
-            .id(1L)
-            .name("дрель")
-            .description("description")
-            .available(true)
-            .ownerId(1L)
-            .build();
+    private ItemDto itemDto;
 
-    private CommentDto commentDto = CommentDto.builder()
-            .id(1L)
-            .text("qwer")
-            .itemId(1L)
-            .build();
+    private CommentDto commentDto;
+
+    @BeforeEach
+    void setUp() {
+        itemDto = ItemDto.builder()
+                .id(1L)
+                .name("дрель")
+                .description("description")
+                .available(true)
+                .ownerId(1L)
+                .build();
+        commentDto = CommentDto.builder()
+                .id(1L)
+                .text("qwer")
+                .itemId(1L)
+                .build();
+    }
 
     @Test
     void createItem() throws Exception {

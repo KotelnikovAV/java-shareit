@@ -9,13 +9,15 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.practicum.shareit.booking.controller.BookingController.PATTERN;
+
 @Data
 @Builder
 public class ItemRequestDto {
     private long id;
     @NotBlank
     private String description;
-    @JsonFormat(pattern = "yyyy-MM-dd, HH:mm:ss")
+    @JsonFormat(pattern = PATTERN)
     private LocalDateTime created;
     private List<ItemDto> items;
 }

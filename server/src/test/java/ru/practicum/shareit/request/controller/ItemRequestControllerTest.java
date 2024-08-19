@@ -1,6 +1,7 @@
 package ru.practicum.shareit.request.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,10 +36,15 @@ class ItemRequestControllerTest {
     @MockBean
     private ItemRequestService itemRequestService;
 
-    private ItemRequestDto itemRequestDto = ItemRequestDto.builder()
-            .id(1L)
-            .description("description")
-            .build();
+    private ItemRequestDto itemRequestDto;
+
+    @BeforeEach
+    void setUo() {
+        itemRequestDto = ItemRequestDto.builder()
+                .id(1L)
+                .description("description")
+                .build();
+    }
 
     @Test
     void create() throws Exception {

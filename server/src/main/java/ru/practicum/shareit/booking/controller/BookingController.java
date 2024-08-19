@@ -15,8 +15,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("bookings")
 public class BookingController {
-    private final BookingService bookingService;
     public static final String USER_ID = "X-Sharer-User-Id";
+
+    private final BookingService bookingService;
 
     @PostMapping
     public ResponseBookingDto create(@RequestBody RequestBookingDto booking,

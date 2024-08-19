@@ -21,7 +21,7 @@ class ItemRequestControllerTest {
     @InjectMocks
     private ItemRequestController itemRequestController;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper;
 
     private MockMvc mvc;
 
@@ -29,6 +29,8 @@ class ItemRequestControllerTest {
 
     @BeforeEach
     void setUp() {
+        mapper = new ObjectMapper();
+
         mvc = MockMvcBuilders
                 .standaloneSetup(itemRequestController)
                 .build();

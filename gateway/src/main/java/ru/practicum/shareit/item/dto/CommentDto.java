@@ -7,6 +7,8 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+import static ru.practicum.shareit.booking.controller.BookingController.PATTERN;
+
 @Data
 @Builder
 public class CommentDto {
@@ -15,6 +17,6 @@ public class CommentDto {
     private String text;
     private long itemId;
     private String authorName;
-    @JsonFormat(pattern = "yyyy-MM-dd, HH:mm:ss")
+    @JsonFormat(pattern = PATTERN)
     private LocalDateTime created;
 }

@@ -22,7 +22,7 @@ class ItemControllerTest {
     @InjectMocks
     private ItemController itemController;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper;
 
     private MockMvc mvc;
 
@@ -32,6 +32,8 @@ class ItemControllerTest {
 
     @BeforeEach
     void setUp() {
+        mapper = new ObjectMapper();
+
         mvc = MockMvcBuilders
                 .standaloneSetup(itemController)
                 .build();

@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -37,21 +38,28 @@ class BookingControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    LocalDateTime localDateTime = LocalDateTime.now();
+    private LocalDateTime localDateTime;
 
-    private RequestBookingDto requestBookingDto = RequestBookingDto.builder()
-            .id(1)
-            .start(localDateTime)
-            .end(localDateTime.plusHours(1))
-            .itemId(1)
-            .build();
+    private RequestBookingDto requestBookingDto;
 
-    private ResponseBookingDto responseBookingDto = ResponseBookingDto.builder()
-            .id(1)
-            .start(localDateTime)
-            .end(localDateTime.plusHours(1))
-            .status(Status.APPROVED)
-            .build();
+    private ResponseBookingDto responseBookingDto;
+
+    @BeforeEach
+    void setUp() {
+        localDateTime = LocalDateTime.now();
+        requestBookingDto = RequestBookingDto.builder()
+                .id(1)
+                .start(localDateTime)
+                .end(localDateTime.plusHours(1))
+                .itemId(1)
+                .build();
+        responseBookingDto = ResponseBookingDto.builder()
+                .id(1)
+                .start(localDateTime)
+                .end(localDateTime.plusHours(1))
+                .status(Status.APPROVED)
+                .build();
+    }
 
     @Test
     void create() throws Exception {

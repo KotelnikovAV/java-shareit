@@ -14,8 +14,10 @@ import ru.practicum.shareit.booking.service.BookingClient;
 @RequiredArgsConstructor
 @RequestMapping("bookings")
 public class BookingController {
-    private final BookingClient bookingClient;
     public static final String USER_ID = "X-Sharer-User-Id";
+    public static final String PATTERN = "yyyy-MM-dd, HH:mm:ss";
+
+    private final BookingClient bookingClient;
 
     @PostMapping
     public ResponseEntity<Object> create(@Valid @RequestBody RequestBookingDto booking,
