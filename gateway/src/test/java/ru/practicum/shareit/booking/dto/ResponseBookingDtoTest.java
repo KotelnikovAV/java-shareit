@@ -8,16 +8,12 @@ import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.JsonContent;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static ru.practicum.shareit.constants.Constants.LOCAL_DATE_TIME;
 
 @JsonTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class ResponseBookingDtoTest {
-    public static final LocalDateTime LOCAL_DATE_TIME = LocalDateTime.of(2000, 10, 20, 10,
-            20, 10, 10);
-
     private final JacksonTester<ResponseBookingDto> json;
     private ResponseBookingDto booking;
 

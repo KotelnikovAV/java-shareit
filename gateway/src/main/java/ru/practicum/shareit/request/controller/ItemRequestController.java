@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.service.RequestClient;
 
-import static ru.practicum.shareit.booking.controller.BookingController.USER_ID;
+import static ru.practicum.shareit.constants.Constants.USER_ID;
 
 @Slf4j
 @RestController

@@ -9,14 +9,13 @@ import ru.practicum.shareit.booking.dto.RequestBookingDto;
 import ru.practicum.shareit.booking.dto.State;
 import ru.practicum.shareit.booking.service.BookingClient;
 
+import static ru.practicum.shareit.constants.Constants.USER_ID;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("bookings")
 public class BookingController {
-    public static final String USER_ID = "X-Sharer-User-Id";
-    public static final String PATTERN = "yyyy-MM-dd, HH:mm:ss";
-
     private final BookingClient bookingClient;
 
     @PostMapping

@@ -8,7 +8,7 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
-import static ru.practicum.shareit.booking.controller.BookingController.PATTERN;
+import static ru.practicum.shareit.constants.Constants.PATTERN;
 
 @Data
 @Builder

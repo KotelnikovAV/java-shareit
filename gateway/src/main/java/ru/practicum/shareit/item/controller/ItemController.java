@@ -9,7 +9,7 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemClient;
 
-import static ru.practicum.shareit.booking.controller.BookingController.USER_ID;
+import static ru.practicum.shareit.constants.Constants.USER_ID;
 
 @Slf4j
 @RestController
